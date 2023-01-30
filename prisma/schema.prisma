@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Relayer {
+  id String @id
+  transactions Transaction[]
+}
+
+model Transaction {
+  id String @id
+  txHash String? @unique
+  relayer Relayer? @relation(fields: [relayerId], references: [id])
+  relayerId String?
+  nonce Int?
+  txObject Json? 
+  status String @default("PENDING")
+}
