@@ -19,7 +19,7 @@ def post_request(url):
 count = 0;
 with concurrent.futures.ThreadPoolExecutor() as executor:
     # Use map to send the requests concurrently
-    results = [executor.submit(post_request, 'http://localhost:1337/transaction/sendTransaction') for _ in range(int(sys.argv[1]))]
+    results = [executor.submit(post_request, 'http://13.235.59.109:1337/transaction/sendTransaction') for _ in range(int(sys.argv[1]))]
 
     for f in concurrent.futures.as_completed(results):
         try:

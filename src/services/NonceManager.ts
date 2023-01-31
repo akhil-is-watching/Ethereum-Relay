@@ -18,17 +18,18 @@ export class NonceManager {
 
     seedRelayers() {
         keystorage.forEach(async(key) => {
-            this.relayers.set(key.address, await this.getLatestNonce(key.address))
+            this.relayers.set(key.address, await this.getLatestNonce(key.address, false))
         })
         console.log(`All relayers nonce synced`)
     }
 
-    async getLatestNonce(address: string) {
+    async getLatestNonce(address: string, increment: boolean) {
         let recordNonce = await this.provider.getTransactionCount(address, "pending"); 
         let customNonce = this.relayers.get(address)
         if(customNonce === undefined) customNonce = 0;
         let nonce = recordNonce > customNonce ? recordNonce : customNonce
-        this.relayers.set(address, nonce+1)
+        if (increment) this.relayers.set(address, nonce+1);
+        if(!increment) this.relayers.set(address, nonce);
         return nonce;
     }
 

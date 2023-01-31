@@ -56,29 +56,29 @@ export default class TransactionService {
 
     async sendTransaction(transactionId: string, transaction: EIP1559Transaction) {
         let relayer = this.getNextRelayer();
-        let nonce = await this.nonceManager.getLatestNonce(relayer);
+        let nonce = await this.nonceManager.getLatestNonce(relayer, true);
         console.log(`Sending from ${relayer} with nonce ${nonce}`)
         let wallet = this.wallets.get(relayer);
         transaction.nonce = nonce;
         wallet?.sendTransaction(transaction)
             .then(async(transactionReceipt) => {
                 console.log(`txHash : ${transactionReceipt.hash}`)
-                await this.DB.prisma.transaction.update({
-                    where: {
-                        id: transactionId
-                    },
-                    data: {
-                        relayerId: relayer,
-                        txHash: transactionReceipt.hash,
-                        nonce: nonce,
-                        status: "SUCCESS",
-                        txObject: this.parseTransactionReceipt(transactionReceipt)
-                    }
-                })
+                // await this.DB.prisma.transaction.update({
+                //     where: {
+                //         id: transactionId
+                //     },
+                //     data: {
+                //         relayerId: relayer,
+                //         txHash: transactionReceipt.hash,
+                //         nonce: nonce,
+                //         status: "SUCCESS",
+                //         txObject: this.parseTransactionReceipt(transactionReceipt)
+                //     }
+                // })
             })
             .catch(async(error: any) => {
                 console.log(`Transaction failed with nonce: ${nonce}, error: ${error}`);
-                await this.nonceManager.getLatestNonce(relayer);
+                await this.nonceManager.getLatestNonce(relayer, false);
                 await this.DB.prisma.transaction.update({
                     where: {
                         id: transactionId
