@@ -77,7 +77,7 @@ export default class TransactionService {
                 })
             })
             .catch(async(error: any) => {
-                console.log(`Transaction failed with nonce: ${nonce}`);
+                console.log(`Transaction failed with nonce: ${nonce}, error: ${error}`);
                 await this.nonceManager.getLatestNonce(relayer);
                 await this.DB.prisma.transaction.update({
                     where: {
@@ -90,7 +90,6 @@ export default class TransactionService {
                     }
                 })
             })
-        this.nonceManager.incrementNonce(relayer);
     }
 
 }

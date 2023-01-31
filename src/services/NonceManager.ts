@@ -28,6 +28,7 @@ export class NonceManager {
         let customNonce = this.relayers.get(address)
         if(customNonce === undefined) customNonce = 0;
         let nonce = recordNonce > customNonce ? recordNonce : customNonce
+        this.relayers.set(address, nonce+1)
         return nonce;
     }
 
