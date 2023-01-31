@@ -6,9 +6,8 @@ import sys
 data = {
   "to": "0xa65309c4a9398946A86862Dee81f05Cde9a3958D",
   "value": "1",
-  "gasLimit": "21000",
-  "maxFeePerGas": "6000000000",
-  "maxPriorityFeePerGas": "6000000000"
+  "maxFeePerGas": "200000000000",
+  "maxPriorityFeePerGas": "100000000000"
 }
 
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}

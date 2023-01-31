@@ -63,15 +63,6 @@ export default class TransactionService {
         wallet?.sendTransaction(transaction)
             .then(async(transactionReceipt) => {
                 console.log(`txHash : ${transactionReceipt.hash}`)
-                let trxn = {
-                    id: transactionId,
-                    from: relayer,
-                    hash: transactionReceipt.hash,
-                    nonce: nonce,
-                    success: true,
-                    pending: false,
-                    transactionReceipt: JSON.stringify(transactionReceipt)
-                }
                 await this.DB.prisma.transaction.update({
                     where: {
                         id: transactionId
